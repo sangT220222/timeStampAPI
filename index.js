@@ -19,9 +19,15 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+//handling parameter dynamically by using ":" aftrer specified route 
+app.get("/api/:timestamp", function (req, res) {
+  const value = req.params.timestamp
+  const new_form = new Date (value);
+  //converting YYYY-MM-DD to unix
+  const unix_date = Math.floor(new_form.getTime() / 1000)  
+  //converting YYYY-MM-DD to UTC
+  const utc_date = new_form.toUTCString();
+  res.json({unix: unix_date, utc: utc_date});
 });
 
 
