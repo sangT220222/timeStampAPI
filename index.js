@@ -22,11 +22,26 @@ app.get("/", function (req, res) {
 //handling parameter dynamically by using ":" aftrer specified route 
 app.get("/api/:timestamp", function (req, res) {
   const value = req.params.timestamp
-  const new_form = new Date (value);
-  //converting YYYY-MM-DD to unix
-  const unix_date = Math.floor(new_form.getTime() / 1000)  
-  //converting YYYY-MM-DD to UTC
-  const utc_date = new_form.toUTCString();
+  var utc_date, unix_date;
+  if(!isNaN(value)){
+    const timestampInt = parseInt(value);
+    //If it's a 10-digit number, it's likely in seconds, convert to milliseconds
+    if (timestampInt.length === 10) {
+      var to_convert = new Date(timestampInt * 1000);
+    } else {
+      // Otherwise, treat it as milliseconds
+      var to_convert = new Date(timestampInt);
+    }
+    utc_date = to_convert.toUTCString();
+    unix_date = timestampInt;
+  }else {
+    //converting YYYY-MM-DD to unix
+    var new_form = new Date(value);
+    unix_date = Math.floor(new_form.getTime() / 1000)  
+    //converting YYYY-MM-DD to UTC
+    utc_date = new_form.toUTCString();
+  }
+
   res.json({unix: unix_date, utc: utc_date});
 });
 
