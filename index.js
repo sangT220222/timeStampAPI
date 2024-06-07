@@ -20,6 +20,7 @@ app.get("/", function (req, res) {
 
 
 //handling parameter dynamically by using ":" aftrer specified route 
+//The question mark allows for more flexible routing and ensuring that your server can handle requests with or without the timestamp parameter.
 app.get("/api/:timestamp?", function (req, res) {
   const value = req.params.timestamp
   var utc_date, unix_date;
